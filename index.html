@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Test</title>
+</head>
+<style>
+    /* styles.css */
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        background-image: url(https://i0.wp.com/aptitude-test.com/wp-content/uploads/2020/11/typing.jpg?fit=1000%2C666&ssl=1);
+        background-size: cover;
+    }
+
+    @media (max-width: 320px) {
+        body {
+            width: 100%;
+        }
+
+        #start-button {
+            height: 5vh;
+            width: 7vw;
+
+        }
+
+        #start-button {
+            height: 5vh;
+            width: 10vw;
+            font-size: 20px;
+            color: red;
+        }
+
+    }
+
+    #test-container {
+        text-align: center;
+        background: linear-gradient(white, skyblue);
+        padding: 20px;
+        border: 3px solid black;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        color: black;
+        font-size: 25px;
+        height: 70vh;
+        width: 50vw;
+        border-radius: 25px;
+        margin-top: 90px;
+
+
+    }
+
+    #start-button {
+        height: 10vh;
+        width: 7vw;
+        border-radius: 25px;
+        border: 2px black;
+        font-size: 20px;
+        color: red;
+    }
+
+    #start-button:hover {
+        background-color: black;
+    }
+
+
+    #text-to-type {
+        margin-bottom: 20px;
+    }
+
+    #input-area {
+        width: 100%;
+        height: 100px;
+        margin-bottom: 20px;
+        border-radius: 25px;
+        border: 2px solid black;
+        font-size: 20px;
+
+    }
+
+    #results {
+        margin-top: 20px;
+    }
+
+    #results p {
+        margin: 5px;
+    }
+
+    @media screen and (max-width:425px) {
+        #start-button{
+            width: 70px;
+        }
+        #text-to-type{
+            font-size: 1.20rem;
+        }
+        #input-area{
+            height: 70px;
+        }
+        p{
+            font-size: 1rem;
+        }
+    }
+    @media screen and (max-width:768px) {
+        #start-button{
+            width: 70px;
+        }
+        p{
+            font-size: 1.30rem;
+        }
+    }
+    @media screen and (max-width:375px) {
+        p{
+            font-size: 1.10rem;
+        }
+    }
+</style>
+
+<body>
+    <div id="test-container">
+        <p id="text-to-type">Type this text as quickly and accurately as you can.</p>
+        <textarea id="input-area" placeholder=""></textarea>
+        <button id="start-button">Start Test</button>
+        <div id="results">
+            <p>Time left: <span id="time-left">30</span> seconds</p>
+            <p>Speed: <span id="speed">0</span> WPM</p>
+            <p>Accuracy: <span id="accuracy">0</span>%</p>
+        </div>
+    </div>
+
+    <script>
+        // script.js
+        let timeLeft = 30;
+        let timer;
+        let started = false;
+
+        document.getElementById('start-button').addEventListener('click', startTest);
+
+        function startTest() {
+            if (started) return;
+            started = true;
+            document.getElementById('input-area').value = '';
+            document.getElementById('input-area').focus();
+            document.getElementById('time-left').textContent = timeLeft;
+            document.getElementById('speed').textContent = '0';
+            document.getElementById('accuracy').textContent = '0';
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                document.getElementById('time-left').textContent = timeLeft;
+            } else {
+                clearInterval(timer);
+                calculateResults();
+            }
+        }
+
+        function calculateResults() {
+            const textToType = document.getElementById('text-to-type').textContent;
+            const typedText = document.getElementById('input-area').value;
+            const typedWords = typedText.trim().split(/\s+/).length;
+            const correctCharacters = countCorrectCharacters(textToType, typedText);
+            const accuracy = (correctCharacters / textToType.length) * 100;
+
+            document.getElementById('speed').textContent = (typedWords * 2).toFixed(2); // Words per minute
+            document.getElementById('accuracy').textContent = accuracy.toFixed(2); // Accuracy percentage
+        }
+
+        function countCorrectCharacters(original, typed) {
+            let correctCount = 0;
+            for (let i = 0; i < typed.length; i++) {
+                if (typed[i] === original[i]) {
+                    correctCount++;
+                }
+            }
+            return correctCount;
+        }
+
+    </script>
+</body>
+
+</html>
